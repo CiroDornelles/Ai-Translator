@@ -1,4 +1,3 @@
-      
 # AI-Powered Lore Translator
 
 ## 🧙‍♂️ Translate the Mystical Narratives, Seamlessly.
@@ -70,16 +69,10 @@ If you wish to contribute or run the application from source, follow these steps
 git clone https://github.com/your-username/ai-powered-lore-translator.git
 cd ai-powered-lore-translator
 
-    
-
-IGNORE_WHEN_COPYING_START
-Use code with caution. Markdown
-IGNORE_WHEN_COPYING_END
-2. Backend Setup (Python)
+#### 2. Backend Setup (Python)
 
 Navigate to the project root and set up the Python environment:
 
-      
 # Create a virtual environment
 python3 -m venv venv
 source venv/bin/activate # On Windows use `venv\Scripts\activate`
@@ -87,69 +80,39 @@ source venv/bin/activate # On Windows use `venv\Scripts\activate`
 # Install backend dependencies (Flask/FastAPI, Google-Gemini, etc.)
 pip install -r requirements.txt # (You'll need to create this file with your dependencies)
 
-    
-
-IGNORE_WHEN_COPYING_START
-Use code with caution. Bash
-IGNORE_WHEN_COPYING_END
-3. Frontend Setup (Flutter)
-
+#### 3. Frontend Setup (Flutter)
 Navigate to the Flutter project directory (e.g., flutter_app if you choose to separate it, or directly in root if combined):
 
-      
 # Get Flutter dependencies
 flutter pub get
 
-    
-
-IGNORE_WHEN_COPYING_START
-Use code with caution. Bash
-IGNORE_WHEN_COPYING_END
-4. Configure API Key
+#### 4. Configure API Key
 
 You will need a Google Gemini API Key.
 Create or open config/app_config.json and add your API key:
 
-      
 {
     "api_key": "YOUR_GEMINI_API_KEY_HERE",
     "selected_prompt": "mage_crusade_prompt.txt",
     "auto_copy_to_clipboard": true
 }
 
-    
-
-IGNORE_WHEN_COPYING_START
-Use code with caution. Json
-IGNORE_WHEN_COPYING_END
-
 Important: Keep your API key secure and do not commit it directly to public repositories.
-5. Running the Application (Development Mode)
+
+#### 5. Running the Application (Development Mode)
 
 You will need to run the Python backend service and the Flutter frontend application separately for development:
 
 In Terminal 1 (for Python Backend):
 
-      
 source venv/bin/activate # Activate your Python virtual environment
 python src/main_backend_api.py # Or whatever your main Flask/FastAPI entry point is called
 
-    
-
-IGNORE_WHEN_COPYING_START
-Use code with caution. Bash
-IGNORE_WHEN_COPYING_END
-
 In Terminal 2 (for Flutter Frontend):
 
-      
 flutter run
 
-    
 
-IGNORE_WHEN_COPYING_START
-Use code with caution. Bash
-IGNORE_WHEN_COPYING_END
 📖 Usage
 
     Launch the Application: Once installed/running, the intuitive GUI will appear.
