@@ -1,0 +1,620 @@
+Com certeza! Peço desculpas novamente. Aqui está o contexto atualizado do projeto em formato Markdown, que é ótimo para organização e leitura.
+
+AI-Powered Lore Translator - Contexto Atualizado do Projeto
+1. Visão Geral e Filosofia
+
+Nome do Projeto: AI-Powered Lore Translator
+
+Objetivo Principal: Desenvolver um aplicativo desktop robusto e cross-platform para tradução especializada de lore (inicialmente focado em White Wolf/Mage: The Ascension, mas modular para outros lores), com funcionalidades colaborativas.
+
+Público-Alvo: Usuários leigos em tecnologia, buscando uma experiência "one-click wonder" e "plug-and-play".
+
+Filosofia: Open-source, livre, visualmente atraente, alta UX, escalável a longo prazo.
+
+2. Stack Tecnológica Escolhida (para o Longo Prazo)
+
+Frontend (GUI): Flutter (Linguagem: Dart)
+
+Justificativa: UI/UX fantástica, performance nativa, cross-platform (desktop, web, mobile futuro), bom tamanho de executável.
+
+Backend (Core Logic & API): Python (com Flask/FastAPI para API REST local/remota, ou módulos Python chamados via FFI futura).
+
+Justificativa: Reutilização da lógica existente (Gemini, OCR), ecossistema imbatível para IA/dados.
+
+Empacotamento: PyInstaller (para empacotar o backend Python) + Ferramentas de Instalador Nativas (NSIS para Windows, pkgbuild/DMG para macOS, etc. para empacotar Flutter e Python juntos).
+
+CI/CD: GitHub Actions (para builds automatizados e GitHub Releases).
+
+Banco de Dados Local: SQLite (para gerenciamento de projetos, glossário, histórico).
+
+3. Visão Detalhada das Funcionalidades
+
+Tradução IA: Utiliza a API Gemini com prompts altamente personalizáveis.
+
+Input Flexível:
+
+Área de Transferência (Texto).
+
+FUTURO: Área de Transferência (Imagem) + OCR (extração de texto de livros/PDFs via DocLing/Tesseract).
+
+Saída HTML Modular: Gera HTML e CSS externos (em pasta "Documentos") para visualização da tradução, com formatação rica (Markdown) e explicações do modelo.
+
+Gerenciamento de Prompts: GUI para selecionar, criar (manualmente ou via IA), editar e salvar prompts personalizados.
+
+Gerenciamento de Glossário/Jargões: GUI e DB SQLite para definir termos chave-valor específicos do lore, injetáveis no prompt.
+
+Painel de Projeto Colaborativo (GUI):
+
+Carregar documentos (texto, PDF) e dividir em segmentos.
+
+Gerenciamento de progresso (traduzido, revisado, etc.).
+
+Histórico de Traduções.
+
+FUTURO: Atribuição de tarefas, comentários, sincronização.
+
+API REST Interna: Para que o Frontend Flutter possa se comunicar com o Backend Python localmente.
+
+Atualizações: Notificação de nova versão via GUI, com link para GitHub Releases.
+
+Internacionalização: A UI do app terá suporte a múltiplos idiomas por padrão.
+
+4. Estado Atual do Projeto em Código
+
+Conquistas de Hoje:
+
+Repositório criado no GitHub.
+
+Arquitetura inicial do projeto definida (stack tecnológica, fluxo de comunicação).
+
+Estrutura de pastas principal criada (src/, prompts/, templates/, assets/, config/, .github/workflows/).
+
+README.md detalhado em inglês (incluindo menção a i18n) gerado e adicionado.
+
+Arquivos placeholder básicos criados (ex: translator_core.py, ocr_service.py, mage_crusade_prompt.txt, templates HTML/CSS, app_config.json, build_release.yml).
+
+Foco dos Próximos Passos: O foco imediato é na conclusão do Marco 1: "MVP CLI Robusto e Automatizado", com passos diários, pequenos e acionáveis.
+
+5. Roadmap de Marcos (Passos Detalhados)
+
+Apresentamos os marcos do projeto e os "babysteps" (pequenos passos diários) para alcançá-los.
+
+Marco 1: MVP CLI Robusto e Automatizado
+
+Descrição: Finalização do tradutor de linha de comando com modularidade e build automatizado.
+
+Progresso Já Realizado:
+
+Repositório criado, arquitetura definida, estrutura de pastas e README estabelecidos.
+
+translator_core.py básico com placeholder para a lógica de tradução Gemini (já adaptado para caminhos do PyInstaller).
+
+Placeholder mage_crusade_prompt.txt e templates de saída HTML/CSS criados.
+
+Workflow de GitHub Actions para build_release.yml configurado (como um placeholder para CI/CD).
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - requirements.txt Inicial
+
+Tarefa: Criar um arquivo requirements.txt na raiz do projeto. Listar as dependências essenciais do Python: google-generativeai, python-dotenv, pyperclip (para clipboard), pyinstaller (para empacotamento).
+
+Validação: Executar pip install -r requirements.txt para garantir que todos os pacotes sejam instalados sem erros. Criar e ativar um ambiente virtual Python.
+
+Dia 2: Python Backend - Carregamento Seguro da API Key (CLI)
+
+Tarefa: Implementar python-dotenv para carregar a chave da API Gemini de um arquivo .env (ex: GEMINI_API_KEY=sua_chave_aqui). Atualizar src/translator_core.py para ler com segurança essa variável de ambiente para gemini.configure(). Remover a chave da API do placeholder config/app_config.json por enquanto (ou deixá-la apenas para configurações padrão, não para segredos).
+
+Validação: Executar python src/translator_core.py via CLI. Verificar se a chave da API é carregada corretamente do .env. Por enquanto, deve apenas "inicializar".
+
+Dia 3: Python Backend - Integração Básica da API Gemini (CLI)
+
+Tarefa: Em src/translator_core.py, adicionar uma função para chamar a API Gemini. Para teste, fixar um prompt simples e uma pequena entrada de texto (ex: 'Hello, world!'). Obter uma resposta do Gemini.
+
+Validação: Executar python src/translator_core.py. Imprimir a resposta bruta do Gemini no console. Verificar se é uma tradução/resposta válida para a entrada de teste.
+
+Dia 4: Python Backend - Carregamento Dinâmico de Prompts (CLI)
+
+Tarefa: Modificar src/translator_core.py para ler o conteúdo do prompt dinamicamente de prompts/mage_crusade_prompt.txt. Garantir que os caminhos dos arquivos sejam tratados corretamente para o ambiente empacotado do PyInstaller (ex: usando sys._MEIPASS ou os.path.join(os.path.dirname(__file__), '..', 'prompts')).
+
+Validação: Executar python src/translator_core.py via CLI. Confirmar que a saída da tradução usa o texto de mage_crusade_prompt.txt.
+
+Dia 5: Python Backend - Geração de Saída HTML (CLI)
+
+Tarefa: Refinar src/translator_core.py para pegar o texto original, texto traduzido e quaisquer explicações do modelo. Injetar isso em templates/html_output_template.html e templates/output_style.css. Salvar o arquivo HTML completo em um caminho de saída especificado (ex: Documentos/lore_translation_AAAAMMDD_HHMMSS.html).
+
+Validação: Executar o script, verificar a pasta Documentos para o arquivo HTML gerado. Abri-lo em um navegador e verificar a formatação e o conteúdo corretos.
+
+Dia 6: Python Backend - Integração com Área de Transferência (CLI)
+
+Tarefa: Integrar pyperclip em src/translator_core.py para: 1) Ler o texto de entrada diretamente da área de transferência do sistema. 2) Copiar a saída HTML gerada (ou pelo menos o texto traduzido) de volta para a área de transferência.
+
+Validação: Copiar algum texto para sua área de transferência. Executar o script CLI. Colar (Ctrl+V) em outro lugar e verificar se o conteúdo traduzido/HTML está lá.
+
+Dia 7: Configuração e Teste Local do Build PyInstaller
+
+Tarefa: Atualizar o comando pyinstaller usado localmente (e posteriormente nos GitHub Actions) para empacotar corretamente src/translator_core.py junto com todos os arquivos de dados necessários (prompts/, templates/, config/). Garantir que a lógica path_to_data em translator_core.py encontre corretamente esses arquivos dentro do executável empacotado. Criar um script build.sh simples para teste local.
+
+Validação: Executar seu build.sh local. Testar o executável gerado na pasta dist. Verificar se ele executa sem erros e realiza corretamente todas as funcionalidades CLI (entrada da área de transferência, tradução, saída HTML).
+
+Dia 8: GitHub Actions - Automação Completa do Build e Release CLI
+
+Tarefa: Refinar .github/workflows/build_release.yml. Adicionar etapas específicas para executar pyinstaller para o backend Python. Configurá-lo para carregar o executável resultante como um asset de release após um push de tag (ex: v0.0.1).
+
+Validação: Fazer um push de uma nova tag Git (ex: git tag v0.0.1; git push origin v0.0.1). Monitorar o workflow do GitHub Actions. Verificar se o build é concluído com sucesso e o executável é carregado para o GitHub Releases. Baixar e testar este executável liberado.
+
+Marco 2: Primeira GUI & Armazenamento de API Key
+
+Descrição: Introdução da interface gráfica básica e gerenciamento seguro da chave API.
+
+Babysteps para Concluir:
+
+Dia 1: Flutter - Configuração Inicial do Projeto
+
+Tarefa: Em um novo diretório, criar o projeto principal Flutter (ex: flutter create lore_translator_gui). Configurar um main.dart básico com um MaterialApp e um Scaffold simples.
+
+Validação: Executar flutter run e ver o aplicativo Flutter padrão rodando.
+
+Dia 2: Flutter - Layout Básico da UI
+
+Tarefa: Projetar uma UI muito simples: um TextField para entrada, um ElevatedButton para 'Traduzir', e um widget Text como placeholder para os resultados. Organizar usando Column e Padding.
+
+Validação: O aplicativo compila e mostra o layout básico da UI.
+
+Dia 3: Flutter - Entrada da Chave API e Integração da UI
+
+Tarefa: Adicionar um TextField dedicado (talvez em uma tela de configurações ou um diálogo separado) para a chave da API Gemini. Adicionar um botão 'Salvar'. Implementar gerenciamento de estado local básico para o campo de entrada.
+
+Validação: O usuário pode digitar no campo da chave da API e ver sua entrada.
+
+Dia 4: Flutter - Armazenamento Seguro da Chave API Local
+
+Tarefa: Implementar armazenamento seguro para a chave da API usando shared_preferences (para desktop, um armazenamento simples de chave-valor) ou flutter_secure_storage (mais seguro, mas pode ter considerações específicas de configuração para desktop). Salvar a chave quando o usuário clicar em 'Salvar'.
+
+Validação: Inserir a chave da API, salvar, fechar o aplicativo, reabrir, verificar se a chave é carregada e preenchida no campo.
+
+Dia 5: Python Backend - Endpoint Simples da API REST (Flask/FastAPI)
+
+Tarefa: No seu backend Python, configurar uma aplicação Flask ou FastAPI mínima. Criar um endpoint GET /health básico que simplesmente retorna {"status": "ok"}. Garantir que ele seja executado em uma porta local específica (ex: 5000).
+
+Validação: Executar python src/main_backend_api.py (ou similar) e usar Postman/navegador para acessar http://localhost:5000/health. Verificar a resposta 'ok'.
+
+Dia 6: Flutter - Conectar ao Backend Python Local
+
+Tarefa: No Flutter, usar o pacote http para fazer uma requisição GET ao endpoint /health do seu backend Python local. Exibir um status 'Backend Conectado' ou 'Backend Desconectado' na UI do Flutter.
+
+Validação: Executar o aplicativo Flutter e o backend Python. Verificar se o status da conexão no Flutter é atualizado corretamente.
+
+Dia 7: Flutter - Passar Chave API para o Backend
+
+Tarefa: Modificar o lado Flutter para enviar a chave da API carregada com segurança para o backend Python. Isso provavelmente será parte de uma requisição POST para um futuro endpoint /translate, mas por enquanto, você pode testar enviando-a para um endpoint placeholder.
+
+Validação: Verificar (ex: logando no lado Python) se a chave da API é recebida com sucesso pelo backend do Flutter.
+
+Dia 8: Refinamento e Tratamento Básico de Erros (Marco 2)
+
+Tarefa: Adicionar mensagens de erro amigáveis para o usuário para problemas de rede (backend não rodando, porta errada) ou entrada inválida da chave da API. Garantir que a UI permaneça responsiva durante as chamadas da API (ex: usando um FutureBuilder ou gerenciamento de estado).
+
+Validação: Testar com o backend parado; testar com uma chave da API malformada. Observar o tratamento gracioso de erros.
+
+Marco 3: Gerenciamento de Prompts via GUI
+
+Descrição: Interface para selecionar e editar prompts.
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - API de Listagem de Prompts
+
+Tarefa: Criar um endpoint Flask/FastAPI (ex: /prompts/list) que escaneia o diretório prompts/ e retorna um array JSON de nomes de arquivos de prompt (ex: ["mage_crusade_prompt.txt"]).
+
+Validação: Testar o endpoint via Postman/navegador. Verificar se ele retorna a lista correta de arquivos.
+
+Dia 2: Flutter - UI de Seleção de Prompts
+
+Tarefa: Criar uma nova tela/aba no Flutter para 'Gerenciamento de Prompts'. Implementar um DropdownButton ou uma ListView simples para exibir os nomes dos arquivos de prompt buscados da API /prompts/list.
+
+Validação: A UI carrega dinamicamente os nomes dos prompts do backend, e a seleção funciona.
+
+Dia 3: Python Backend - API de Conteúdo de Prompts (GET)
+
+Tarefa: Criar um endpoint Flask/FastAPI (ex: /prompts/{filename}) que retorna o conteúdo do arquivo de prompt especificado como texto puro.
+
+Validação: Testar o endpoint via Postman/navegador com um nome de arquivo válido, verificar se ele retorna o texto correto do prompt.
+
+Dia 4: Flutter - UI de Exibição e Edição de Prompts
+
+Tarefa: Quando um prompt for selecionado na UI, fazer uma chamada de API para /prompts/{filename}. Carregar seu conteúdo em um TextField multi-linha para visualização e edição. Adicionar botões 'Salvar' e 'Novo Prompt' (inicialmente não funcionais).
+
+Validação: O conteúdo do prompt selecionado aparece em um campo de texto editável.
+
+Dia 5: Python Backend - API de Conteúdo de Prompts (POST/PUT)
+
+Tarefa: Criar um endpoint Flask/FastAPI (ex: /prompts/save) que aceita um payload JSON com filename e content. Implementar a lógica para salvar o conteúdo no arquivo especificado no diretório prompts/. Lidar com a criação de novos arquivos ou sobrescrita de existentes.
+
+Validação: Testar requisição POST via Postman para salvar um novo prompt ou modificar um existente. Verificar se as alterações persistem no sistema de arquivos do backend.
+
+Dia 6: Flutter - Lógica de Salvar/Novo Prompt
+
+Tarefa: Implementar a lógica Flutter para os botões 'Salvar' e 'Novo Prompt'. Quando clicados, enviar o conteúdo do TextField para a API de backend /prompts/save. Lidar com mensagens de sucesso/falha.
+
+Validação: O usuário pode editar um prompt existente e salvá-lo, ou criar um novo prompt, e verificar se as alterações são refletidas na lista de prompts e no conteúdo.
+
+Dia 7: Refinamento e UX (Marco 3)
+
+Tarefa: Adicionar diálogos de confirmação para salvar/sobrescrever prompts. Melhorar a ordenação da lista de prompts. Adicionar um botão 'Excluir Prompt' e o endpoint de backend correspondente (/prompts/delete/{filename}). Garantir transições suaves da UI.
+
+Validação: O gerenciamento geral de prompts parece intuitivo e robusto. A exclusão funciona.
+
+Marco 4: Sistema de Glossário Local (SQLite)
+
+Descrição: Implementação de um banco de dados local para termos e jargões.
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - Configuração e Modelo SQLite
+
+Tarefa: Definir um esquema de banco de dados SQLite simples para uma tabela glossary (id, term, translation, notes). Usar o módulo sqlite3 diretamente em Python ou um ORM leve (ex: Peewee ou SQLAlchemy Core) para conectar a data/lore_glossary.db (criar a pasta data/).
+
+Validação: Executar um script Python para inicializar o DB e criar a tabela. Verificar se o arquivo lore_glossary.db existe.
+
+Dia 2: Python Backend - API do Glossário (Leitura/Listagem)
+
+Tarefa: Criar endpoints Flask/FastAPI: /glossary/list (GET para retornar todas as entradas do glossário como JSON) e /glossary/{id} (GET para retornar uma entrada específica).
+
+Validação: Testar os endpoints via Postman/navegador. Verificar se a lista vazia/populada retorna corretamente. Testar a recuperação de ID específico.
+
+Dia 3: Flutter - UI da Lista do Glossário
+
+Tarefa: Criar uma nova tela/aba Flutter para gerenciamento do Glossário. Usar um ListView.builder para exibir os termos do glossário buscados dinamicamente da API de backend /glossary/list.
+
+Validação: A UI mostra uma lista de entradas do glossário (inicialmente vazia ou preenchida).
+
+Dia 4: Python Backend - API do Glossário (Criar/Atualizar)
+
+Tarefa: Adicionar endpoints Flask/FastAPI: /glossary/add (POST para criar uma nova entrada) e /glossary/update/{id} (PUT para modificar uma entrada existente). Implementar lógica para inserir/atualizar dados no SQLite.
+
+Validação: Testar POST/PUT via Postman. Verificar se os dados são adicionados/modificados em lore_glossary.db.
+
+Dia 5: Flutter - UI de Adicionar/Editar Glossário
+
+Tarefa: Implementar um formulário no Flutter para adicionar novos termos do glossário e editar os existentes. Conectar os botões 'Salvar' e 'Cancelar' para chamar as APIs de backend respectivas.
+
+Validação: O usuário pode adicionar novos termos e editar os existentes. As alterações persistem no DB e são refletidas na UI.
+
+Dia 6: Python Backend - API do Glossário (Excluir) & Pesquisa
+
+Tarefa: Adicionar endpoint Flask/FastAPI: /glossary/delete/{id} (DELETE para remover uma entrada). Implementar uma capacidade básica de pesquisa/filtro em /glossary/list (ex: /glossary/list?search=termo).
+
+Validação: Testar DELETE via Postman. Testar pesquisa via navegador, verificar resultados filtrados.
+
+Dia 7: Flutter - UI de Excluir & Pesquisar Glossário
+
+Tarefa: Implementar um botão 'Excluir' para cada item do glossário na UI. Adicionar uma barra básica de pesquisa/filtro à lista do glossário para facilitar a navegação.
+
+Validação: O usuário pode excluir entradas; a pesquisa filtra a lista em tempo real.
+
+Dia 8: Backend - Injetar Glossário no Prompt de Tradução
+
+Tarefa: Modificar src/translator_core.py (ou a lógica da API de backend que lida com a tradução) para consultar o glossário SQLite. Com base no texto original sendo traduzido, identificar termos relevantes e injetá-los dinamicamente no prompt do Gemini (ex: 'Garanta que estes termos sejam traduzidos como: Termo1:Tradução1, Termo2:Tradução2').
+
+Validação: Realizar uma tradução via CLI (ou posteriormente via um endpoint simples da UI). Garantir que os termos do glossário definidos no DB influenciam a saída da tradução conforme o esperado.
+
+Marco 5: Gerenciamento Básico de Projetos (Texto)
+
+Descrição: Carregar documentos (texto), segmentar e gerenciar traduções localmente.
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - Esquema do Projeto SQLite
+
+Tarefa: Estender o esquema do banco de dados SQLite para projects (ex: id, name, created_date, status) e segments (id, project_id, original_text, translated_text, status (ex: 'pending', 'translated', 'reviewed'), last_modified).
+
+Validação: Executar um script para atualizar/criar tabelas em lore_glossary.db ou em um novo lore_projects.db.
+
+Dia 2: Python Backend - API de Projeto (CRUD)
+
+Tarefa: Criar endpoints Flask/FastAPI para gerenciar projetos: /projects/list, /projects/create (POST com nome), /projects/{id} (GET para carregar detalhes do projeto e segmentos), /projects/delete/{id}.
+
+Validação: Testar operações CRUD de projeto via Postman.
+
+Dia 3: Flutter - UI de Lista e Criação de Projetos
+
+Tarefa: Criar uma nova tela/aba Flutter para 'Projetos'. Exibir uma lista de projetos buscados do backend. Implementar um botão 'Novo Projeto' com um diálogo simples para entrada de nome.
+
+Validação: O usuário pode ver os projetos existentes e criar um novo, que então aparece na lista.
+
+Dia 4: Python Backend - Carregamento e Segmentação de Documentos de Texto
+
+Tarefa: Criar um endpoint (ex: /project/{project_id}/upload_text) que aceita o upload de texto puro, o segmenta em blocos lógicos (ex: por quebras de linha duplas para parágrafos, ou usando uma biblioteca NLP simples para frases), e os salva como segments ligados ao project_id especificado no SQLite.
+
+Validação: Carregar um texto grande via Postman, verificar se os segmentos aparecem corretamente no DB para o projeto dado.
+
+Dia 5: Flutter - UI de Entrada de Texto e Carregamento de Projetos
+
+Tarefa: Implementar UI Flutter para 'Importar Texto' dentro de um projeto. Permitir aos usuários colar texto ou selecionar um arquivo .txt usando file_picker. Enviar o texto para o endpoint de segmentação do backend.
+
+Validação: O usuário pode importar texto da área de transferência/arquivo, o que cria segmentos sob o projeto ativo.
+
+Dia 6: Flutter - UI de Lista e Tradução de Segmentos
+
+Tarefa: Quando um projeto é selecionado da lista, navegar para uma nova tela que exibe um ListView.builder de seus segmentos. Para cada segmento, mostrar o texto original e um TextField editável para o texto traduzido.
+
+Validação: Os segmentos são carregados e exibidos. O usuário pode visualizar o texto original e editar o texto traduzido para cada segmento.
+
+Dia 7: Python Backend - API de Tradução e Atualização de Segmentos
+
+Tarefa: Criar um endpoint Flask/FastAPI (ex: /segment/{segment_id}/translate) que aceita o texto original de um segmento, chama translator_core.py para traduzi-lo, e atualiza o translated_text e status no DB SQLite.
+
+Validação: Testar o endpoint via Postman. Verificar se a tradução funciona e o DB é atualizado.
+
+Dia 8: Flutter - Traduzir Segmento Individual e Salvar
+
+Tarefa: Implementar a lógica no Flutter: quando o usuário clica em 'Traduzir' para um segmento, enviar seu texto original para o backend. Exibir o texto traduzido. Além disso, permitir edição manual e salvamento do texto traduzido (atualizar translated_text e status para 'revisado').
+
+Validação: O usuário pode traduzir um segmento individual via IA ou editar manualmente e salvar. As alterações persistem e a UI é atualizada.
+
+Dia 9: Flutter - Status do Segmento e Rastreamento de Progresso
+
+Tarefa: Adicionar indicadores visuais (ex: selos, codificação por cores) para o status do segmento (pendente, traduzido, revisado). Exibir o progresso geral do projeto (ex: 'X% traduzido') na tela da lista de projetos.
+
+Validação: As atualizações de status funcionam, a barra de progresso reflete as alterações com precisão.
+
+Dia 10: Frontend/Backend - Exportar Projeto (Texto/Markdown)
+
+Tarefa: Implementar um endpoint de backend (ex: /project/{id}/export) para exportar todos os segmentos traduzidos de um projeto para um único arquivo .txt ou .md. Criar um botão Flutter para acionar este download e salvar o arquivo localmente.
+
+Validação: O arquivo de texto/markdown exportado é montado corretamente e pode ser baixado.
+
+Marco 6: Integração OCR
+
+Descrição: Adicionar a funcionalidade de extração de texto de imagens/PDFs.
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - Instalação do Tesseract e pytesseract Básico
+
+Tarefa: Garantir que o Tesseract OCR esteja instalado em sua máquina de desenvolvimento e seu executável esteja acessível via PATH. Instalar Pillow e pytesseract. Escrever um pequeno script Python para testar OCR básico em um arquivo de imagem simples.
+
+Validação: Extrair texto com sucesso de uma imagem de teste .png usando pytesseract.
+
+Dia 2: Python Backend - Endpoint OCR para Imagens
+
+Tarefa: Criar um endpoint Flask/FastAPI (ex: /ocr/image) que aceita o upload de um arquivo de imagem (ex: via multipart/form-data), o processa com pytesseract, e retorna o texto extraído como uma resposta JSON.
+
+Validação: Usar Postman ou curl para carregar um arquivo de imagem. Verificar se o texto extraído é retornado corretamente.
+
+Dia 3: Flutter - UI de Seleção de Imagens
+
+Tarefa: Adicionar um botão/opção na área de Gerenciamento de Projetos ou de entrada geral do Flutter para 'Importar de Imagem'. Usar o pacote file_picker para permitir que o usuário selecione um arquivo de imagem (PNG, JPG).
+
+Validação: O seletor de arquivos abre, e o usuário pode selecionar um arquivo de imagem.
+
+Dia 4: Flutter - Carregamento de Imagem para o Backend e Exibição de Texto
+
+Tarefa: Implementar a lógica Flutter para enviar o arquivo de imagem selecionado para o endpoint de backend /ocr/image. Exibir o texto extraído em uma área de visualização (ex: um widget Text ou TextField) dentro da UI do Flutter.
+
+Validação: Selecionar uma imagem, o texto extraído aparece na UI do Flutter após o processamento OCR pelo backend.
+
+Dia 5: Python Backend - Endpoint OCR para PDFs
+
+Tarefa: Instalar PyMuPDF (ou fitz) para processamento de PDF. Criar um endpoint Flask/FastAPI (ex: /ocr/pdf) que aceita o upload de um arquivo PDF. Iterar pelas páginas, converter cada página em uma imagem, processar com pytesseract, e retornar o texto concatenado.
+
+Validação: Carregar um PDF de várias páginas via Postman. Verificar se o texto combinado de todas as páginas é retornado.
+
+Dia 6: Flutter - UI de Seleção e Carregamento de PDF
+
+Tarefa: Adicionar um botão/opção no Flutter para 'Importar de PDF'. Permitir a seleção de um arquivo PDF usando file_picker e enviá-lo para o endpoint /ocr/pdf.
+
+Validação: Selecionar um PDF, o texto extraído aparece na UI do Flutter.
+
+Dia 7: Empacotamento - Estratégia de Dados de Tesseract e Idioma
+
+Tarefa: Pesquisar e planejar a estratégia para empacotar o executável do Tesseract OCR e seus dados de idioma (arquivos tessdata) com o pacote PyInstaller. Isso é complexo e pode envolver o uso da opção datas do PyInstaller ou um hook personalizado.
+
+Validação: Esboçar os passos detalhados para o empacotamento. (O teste de empacotamento real será no CI/CD mais tarde).
+
+Dia 8: Tratamento de Erros, Indicadores de Carregamento e Threading
+
+Tarefa: Implementar tratamento de erros robusto para falhas de OCR (ex: baixa qualidade da imagem, Tesseract não encontrado). Adicionar indicadores de carregamento (CircularProgressIndicator) no Flutter durante o processamento OCR (que pode ser lento). Considerar usar threading ou asyncio do Python para o backend OCR para evitar o bloqueio do thread principal da API.
+
+Validação: O aplicativo lida com entradas ruins graciosamente com feedback do usuário. A UI permanece responsiva durante tarefas OCR longas.
+
+Marco 7: UX Aprimorada & In-App Browser
+
+Descrição: Melhorias na experiência do usuário e visualização integrada.
+
+Babysteps para Concluir:
+
+Dia 1: Flutter - Tema Personalizado e Branding
+
+Tarefa: Definir uma paleta de cores consistente, tipografia (fontes) e iconografia básica que se alinhe com a filosofia de "visualmente atraente". Implementar um ThemeData personalizado do Flutter em todo o aplicativo.
+
+Validação: O aplicativo possui um estilo visual distinto e atraente aplicado a todas as telas atuais.
+
+Dia 2: Flutter - Polimento de Navegação e Layout
+
+Tarefa: Refinar a estrutura de navegação principal (ex: usando TabBarView, BottomNavigationBar, ou NavigationRail para seções principais como Traduzir, Prompts, Glossário, Projetos). Garantir um layout responsivo para diferentes tamanhos de janela (ex: usando MediaQuery, LayoutBuilder).
+
+Validação: A navegação é intuitiva e consistente. A UI se adapta graciosamente ao ser redimensionada.
+
+Dia 3: Flutter - Integração do Visualizador HTML In-App
+
+Tarefa: Pesquisar e integrar um pacote de webview adequado para Flutter Desktop (ex: webview_windows para Windows, desktop_webview_window para multiplataforma, ou explorar flutter_webview_plugin). Substituir o lançamento do navegador externo pela exibição da saída HTML gerada diretamente dentro do aplicativo.
+
+Validação: O HTML traduzido é renderizado diretamente dentro da UI do aplicativo Flutter.
+
+Dia 4: Flutter - Transições e Animações Suaves
+
+Tarefa: Aplicar animações sutis e não intrusivas para transições de tela (PageRouteBuilder, FadeTransition, SlideTransition). Adicionar estilos de barra de rolagem personalizados para uma aparência polida.
+
+Validação: Os elementos da UI animam suavemente, e a rolagem é visualmente aprimorada.
+
+Dia 5: Feedback do Usuário - Carregamento e Notificações
+
+Tarefa: Implementar indicadores de carregamento abrangentes (ex: CircularProgressIndicator centralizado na tela, spinners animados personalizados) para todas as operações assíncronas (chamadas de API, processamento OCR, operações de arquivo). Adicionar mensagens de toast ou notificações SnackBar para feedback de sucesso, aviso e erro.
+
+Validação: Os usuários estão sempre cientes dos processos em segundo plano; as mensagens de sucesso/falha são claras e oportunas.
+
+Dia 6: Expansão da UI de Configurações e Preferências
+
+Tarefa: Expandir a tela de configurações existente (ou criar uma). Incluir preferências do usuário, como: pasta de saída padrão para traduções, alternância de cópia automática para a área de transferência e um menu suspenso para seleção de idioma (para i18n).
+
+Validação: Todas as preferências do usuário são facilmente acessíveis e configuráveis dentro do aplicativo.
+
+Dia 7: Implementação Central de Internacionalização (i18n)
+
+Tarefa: Implementar o mecanismo de internacionalização integrado do Flutter usando flutter_localizations e arquivos .arb. Traduzir strings-chave da UI (ex: rótulos de botões, itens de menu, títulos de tela, mensagens comuns) para pelo menos dois idiomas (ex: inglês e português).
+
+Validação: O aplicativo é iniciado no idioma padrão. A alteração do idioma nas configurações atualiza imediatamente todos os elementos da UI localizados.
+
+Marco 8: Geração de Prompts por IA
+
+Descrição: Permitir que o próprio Gemini ajude a criar prompts.
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - Endpoint de Geração de Prompts
+
+Tarefa: Criar um novo endpoint Flask/FastAPI (ex: /prompt/ai_generate) que aceita uma 'descrição' ou 'contexto' do prompt desejado (ex: 'lore de fantasia, medieval, heroico, tom formal'). Usar a API Gemini para gerar um prompt de tradução adequado com base nesta descrição.
+
+Validação: Enviar uma descrição via Postman; receber um texto de prompt gerado do Gemini como resposta.
+
+Dia 2: Flutter - UI de Geração de Prompts por IA
+
+Tarefa: Adicionar uma nova seção dentro da tela de 'Gerenciamento de Prompts' dedicada à geração de prompts por IA. Esta seção deve ter um campo de entrada para a 'descrição do prompt' e um botão 'Gerar Prompt'.
+
+Validação: Novos elementos da UI para geração por IA estão presentes e dispostos claramente.
+
+Dia 3: Flutter - Integrar Geração de Prompts por IA
+
+Tarefa: Conectar a UI do Flutter ao novo endpoint de backend. Quando 'Gerar Prompt' for clicado, enviar a descrição para o backend. Exibir o prompt gerado na área de edição de prompts existente, permitindo que os usuários o revisem, modifiquem e salvem como um novo prompt personalizado.
+
+Validação: O usuário insere uma descrição, a IA gera um prompt, e ele aparece no campo de edição. O usuário pode então salvá-lo.
+
+Dia 4: Modelos e Exemplos de Prompts (IA)
+
+Tarefa: Fornecer algumas entradas de 'descrição' de exemplo curadas ou 'modelos' de geração de prompt predefinidos na UI para guiar os usuários sobre como usar efetivamente o recurso de geração de prompt por IA.
+
+Validação: Os usuários acham mais fácil gerar prompts de alta qualidade usando os exemplos fornecidos.
+
+Dia 5: Refinamento Iterativo de Prompts de IA
+
+Tarefa: Permitir que os usuários 'regenerem' um prompt (talvez com pequenas modificações em sua descrição inicial) na tela de geração de IA. Implementar um fluxo de trabalho claro para a melhoria iterativa da saída da IA.
+
+Validação: O usuário pode refinar facilmente os prompts de IA gerados anteriormente para melhor atender às suas necessidades.
+
+Marco 9: Colaboração Nível 1 (Import/Export)
+
+Descrição: Habilitar compartilhamento manual de dados de projeto.
+
+Babysteps para Concluir:
+
+Dia 1: Python Backend - Definição do Formato de Exportação de Projetos
+
+Tarefa: Definir um formato de dados robusto e padronizado (ex: um único arquivo JSON ou um arquivo .zip contendo JSONs) para exportar um projeto inteiro. Este formato deve incluir metadados do projeto, todos os segmentos (originais e traduzidos) e, potencialmente, as entradas de glossário associadas e os dados do prompt selecionado.
+
+Validação: Criar um arquivo de exportação de amostra manualmente e verificar sua estrutura.
+
+Dia 2: Python Backend - Lógica de Exportação de Projetos
+
+Tarefa: Implementar um endpoint Flask/FastAPI (ex: /project/{id}/export) que recupera todos os dados necessários do projeto do SQLite e constrói o formato de exportação definido. Retornar este arquivo como uma resposta para download.
+
+Validação: Testar o endpoint de exportação via Postman. Verificar se um arquivo de exportação de projeto válido é baixado.
+
+Dia 3: Flutter - UI e Gatilho de Exportação de Projetos
+
+Tarefa: Adicionar um botão 'Exportar Projeto' à tela de Gerenciamento de Projetos. Conectar este botão para chamar o endpoint de exportação do backend e usar os recursos de salvamento de arquivos do Flutter (ex: path_provider para arquivos temporários, depois um diálogo de salvamento) para permitir que o usuário salve o arquivo de projeto exportado localmente.
+
+Validação: O usuário pode clicar no botão, um diálogo de salvamento de arquivo aparece, e o arquivo do projeto é salvo com sucesso.
+
+Dia 4: Python Backend - Lógica de Importação de Projetos
+
+Tarefa: Implementar um endpoint Flask/FastAPI (ex: /project/import) que aceita um arquivo de exportação de projeto carregado. Analisar o arquivo, extrair os dados do projeto e importá-los para o banco de dados SQLite, criando novos projetos, segmentos e entradas de glossário conforme necessário.
+
+Validação: Carregar um arquivo de projeto previamente exportado via Postman. Verificar se o projeto (com todos os seus dados) é importado corretamente para o banco de dados.
+
+Dia 5: Flutter - UI e Gatilho de Importação de Projetos
+
+Tarefa: Adicionar um botão 'Importar Projeto' à tela de Gerenciamento de Projetos. Usar file_picker para permitir que o usuário selecione um arquivo de exportação de projeto (.loreproj ou .zip). Enviar este arquivo para o endpoint de importação do backend.
+
+Validação: O usuário pode selecionar um arquivo de projeto exportado, e após a importação, o novo projeto aparece em sua lista de projetos no aplicativo.
+
+Dia 6: Resolução Básica de Conflitos e Mesclagem (Opcional)
+
+Tarefa: Implementar lógica básica para lidar com possíveis conflitos durante a importação. Por exemplo, se um projeto com o mesmo nome já existir, solicitar ao usuário que sobrescreva, renomeie ou cancele a importação.
+
+Validação: Testar a importação de um projeto que entra em conflito com um existente. Observar o tratamento gracioso do conflito pelo aplicativo.
+
+Marco 10: Plataforma Colaborativa Completa (Backend)
+
+Descrição: Implementação de um servidor para colaboração em tempo real.
+
+Babysteps para Concluir:
+
+Dia 1: Backend - Pesquisa e Seleção de Tecnologia em Tempo Real
+
+Tarefa: Pesquisar e selecionar uma tecnologia em tempo real adequada para o backend colaborativo (ex: WebSockets com Flask-SocketIO/FastAPI-WebSocket, ou um serviço dedicado em tempo real como Firebase/Supabase/PocketBase). Entender seus conceitos centrais e configuração inicial.
+
+Validação: Decisão tomada sobre a tecnologia em tempo real, e um servidor básico de 'olá mundo' em tempo real (ex: WebSocket de eco) está rodando.
+
+Dia 2: Backend - Autenticação de Usuários e Integração de Banco de Dados
+
+Tarefa: Implementar autenticação de usuários (ex: usando OAuth, JWT, ou um fluxo simples de nome de usuário/senha). Integrar com um banco de dados de usuários (pode estender SQLite ou usar um separado para multiusuários).
+
+Validação: Os usuários podem se registrar, fazer login, e suas sessões são gerenciadas com segurança.
+
+Dia 3: Backend - Gerenciamento de Estado de Projeto Compartilhado
+
+Tarefa: Projetar e implementar um modelo de dados no lado do servidor para projetos e segmentos colaborativos. Este modelo deve suportar acesso e modificação concorrentes por vários usuários. Considerar uma abordagem de bloqueio otimista ou CRDT se a edição concorrente em tempo real for uma prioridade.
+
+Validação: O servidor pode armazenar e recuperar dados de projetos compartilhados para vários usuários.
+
+Dia 4: Flutter - Atualizações de UI em Tempo Real (Exemplo Básico)
+
+Tarefa: Integrar a biblioteca cliente de tempo real escolhida no Flutter. Implementar um recurso de tempo real muito simples, como uma lista de 'quem está online' para um projeto, ou um feed de chat/comentários em tempo real relacionado a um projeto.
+
+Validação: A UI do Flutter é atualizada em tempo real com base em eventos do servidor (ex: usuário entra/sai, novo comentário).
+
+Dia 5: Backend - Atribuição de Tarefas e Notificações
+
+Tarefa: Implementar lógica no lado do servidor para atribuir segmentos específicos a usuários dentro de um projeto colaborativo. Desenvolver notificações em tempo real para atualizações de tarefas (ex: 'Segmento X atribuído ao Usuário Y', 'Usuário Z terminou o Segmento A').
+
+Validação: As tarefas podem ser atribuídas e as notificações são enviadas para os usuários relevantes em tempo real.
+
+Dia 6: Backend - Controle de Versão e Histórico para Segmentos
+
+Tarefa: Implementar versionamento granular para segmentos traduzidos no servidor. Isso deve permitir rastrear alterações, visualizar diferenças entre versões e, potencialmente, reverter para estados anteriores.
+
+Validação: O servidor pode registrar alterações em segmentos e recuperar versões históricas.
+
+Dia 7: Frontend - UI de Edição Colaborativa
+
+Tarefa: Implementar uma experiência de edição colaborativa para segmentos na UI do Flutter. Isso pode envolver mostrar qual usuário está editando um segmento no momento (bloqueio) ou refletir as alterações em tempo real enquanto outros usuários digitam (mais complexo, requer CRDTs).
+
+Validação: Vários usuários podem interagir com o mesmo projeto/segmento, e suas ações/alterações são refletidas nas UIs dos outros.
+
+Dia 8: Estratégia de Implantação para o Backend
+
+Tarefa: Pesquisar e definir uma estratégia de implantação detalhada para o backend em tempo real. Considerar provedores de nuvem (AWS, GCP, Azure), funções sem servidor ou VPS dedicado. Incluir considerações sobre escalabilidade, segurança e custo.
+
+Validação: Um plano de implantação claro e acionável é estabelecido para o backend colaborativo.
+
+6. Desafios e Cuidados Importantes
+
+Dupla Linguagem: Gerenciar Dart (Frontend) e Python (Backend).
+
+Comunicação Inter-Processos: Iniciar e gerenciar o serviço Python pelo app Flutter e comunicar via API REST local.
+
+Empacotamento Complexo: Criar instaladores unificados que empacotem o app Flutter e o serviço Python para cada OS.
+
+Segurança da API Key: Implementar armazenamento seguro (keyring ou criptografia).
+
+OCR: Gerenciamento das dependências (Tesseract, dados de idioma) e sua inclusão no pacote final.
+
+Threading/Assincronicidade: Garantir que a UI permaneça responsiva durante operações demoradas (API, OCR).
+
+Tratamento de Erros: Mensagens amigáveis para o usuário leigo.
+
+Colaboração Real-time: A funcionalidade mais complexa, provavelmente exigirá um backend remoto.
+
+Este documento será nosso guia detalhado para as próximas etapas. Podemos revisá-lo e adaptá-lo conforme o projeto avança.

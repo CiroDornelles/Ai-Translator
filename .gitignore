@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+.DS_Store
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.vscode/
+build/
+# Android
+/android/
+# IntelliJ/Android Studio project files
+.idea/
+*.iml
+.metadata
+pubspec.lock
+build/
+android/
+ios/
+linux/
+macos/
+windows/
+web/
+lib/
+test/
+# Visual Studio Code
